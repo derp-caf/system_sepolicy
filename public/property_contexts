@@ -69,6 +69,7 @@ persist.dbg.wfc_avail_ovr u:object_r:exported3_default_prop:s0 exact int
 persist.radio.multisim.config u:object_r:exported3_radio_prop:s0 exact string
 persist.sys.dalvik.vm.lib.2 u:object_r:exported2_system_prop:s0 exact string
 persist.sys.sf.color_saturation u:object_r:exported2_system_prop:s0 exact string
+persist.sys.sf.native_mode u:object_r:exported2_system_prop:s0 exact bool
 pm.dexopt.ab-ota u:object_r:exported_pm_prop:s0 exact string
 pm.dexopt.bg-dexopt u:object_r:exported_pm_prop:s0 exact string
 pm.dexopt.boot u:object_r:exported_pm_prop:s0 exact string
@@ -114,7 +115,9 @@ tombstoned.max_tombstone_count u:object_r:exported3_default_prop:s0 exact int
 vold.post_fs_data_done u:object_r:exported2_vold_prop:s0 exact int
 
 # vendor-init-readable|vendor-init-actionable
+dev.bootcomplete u:object_r:exported3_system_prop:s0 exact bool
 persist.sys.usb.usbradio.config u:object_r:exported3_system_prop:s0 exact string
+sys.boot_completed u:object_r:exported3_system_prop:s0 exact bool
 sys.retaildemo.enabled u:object_r:exported3_system_prop:s0 exact int
 
 # vendor-init-settable|vendor-init-actionable

@@ -150,12 +150,17 @@ allow appdomain anr_data_file:file { open append };
 unix_socket_connect(appdomain, tombstoned_java_trace, tombstoned)
 allow appdomain tombstoned:fd use;
 allow appdomain dumpstate:fifo_file append;
+allow appdomain incidentd:fifo_file append;
 
 # Allow apps to send dump information to dumpstate
 allow appdomain dumpstate:fd use;
 allow appdomain dumpstate:unix_stream_socket { read write getopt getattr shutdown };
 allow appdomain dumpstate:fifo_file { write getattr };
 allow appdomain shell_data_file:file { write getattr };
+
+# Allow apps to send dump information to incidentd
+allow appdomain incidentd:fd use;
+allow appdomain incidentd:fifo_file { write getattr };
 
 # Write profiles /data/misc/profiles
 allow appdomain user_profile_data_file:dir { search write add_name };
@@ -219,6 +224,7 @@ binder_call(appdomain, ephemeral_app)
 # TODO(b/36375899): Replace this with hal_client_domain once mediacodec is properly attributized
 # as OMX HAL
 hwbinder_use({ appdomain  -isolated_app })
+allow { appdomain -isolated_app } hal_codec2_hwservice:hwservice_manager find;
 allow { appdomain -isolated_app } hal_omx_hwservice:hwservice_manager find;
 allow { appdomain -isolated_app } hidl_token_hwservice:hwservice_manager find;
 

@@ -1036,6 +1036,7 @@ neverallow {
   -tombstoned
   -crash_dump
   -dumpstate
+  -incidentd
   -system_server
 
   # Processes that can't exec crash_dump
@@ -1043,10 +1044,10 @@ neverallow {
   -mediaextractor
 } tombstoned_crash_socket:unix_stream_socket connectto;
 
-# Never allow anyone except dumpstate or the system server to connect or write to
+# Never allow anyone except dumpstate, incidentd, or the system server to connect or write to
 # the tombstoned intercept socket.
-neverallow { domain -dumpstate -system_server } tombstoned_intercept_socket:sock_file write;
-neverallow { domain -dumpstate -system_server } tombstoned_intercept_socket:unix_stream_socket connectto;
+neverallow { domain -dumpstate -incidentd -system_server } tombstoned_intercept_socket:sock_file write;
+neverallow { domain -dumpstate -incidentd -system_server } tombstoned_intercept_socket:unix_stream_socket connectto;
 
 # Android does not support System V IPCs.
 #
@@ -1132,6 +1133,9 @@ neverallow {
   -appdomain # finer-grained rules for appdomain are listed below
   -system_server #populate com.android.providers.settings/databases/settings.db.
   -installd # creation of app sandbox
+  -traced_probes # resolve inodes for i/o tracing.
+                 # only needs open and read, the rest is neverallow in
+                 # traced_probes.te.
 } system_app_data_file:dir_file_class_set { create unlink open };
 neverallow {
   isolated_app
@@ -1323,7 +1327,7 @@ neverallow {
   -vold_prepare_subdirs
   -zygote
 } self:capability dac_override;
-neverallow domain self:capability dac_read_search;
+neverallow { domain -traced_probes } self:capability dac_read_search;
 
 # These are only needed in permissive mode - in enforcing mode the
 # directory write check fails and so these are never attempted.
